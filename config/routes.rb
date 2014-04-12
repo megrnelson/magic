@@ -3,12 +3,17 @@ BlackMagic::Application.routes.draw do
   resources :venues
   resources :dogs
   resources :users
+  resources :pages
   resources :sessions, only: [:new, :create, :destroy]
-  root 'venues#index'
+  root 'pages#home'
 
   match '/signup',  to: 'users#new',            via: 'get'
   match '/signin',  to: 'sessions#new',         via: 'get'
   match '/signout', to: 'sessions#destroy',     via: 'delete'
+  match '/about',   to: 'pages#about',          via: 'get'
+  match '/help',    to: 'pages#help',           via: 'get'
+  match '/contact', to: 'pages#contact',        via: 'get'
+  match '/home',    to: 'pages#home',           via: 'get'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
