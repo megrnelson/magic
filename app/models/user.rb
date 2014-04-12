@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
 					  uniqueness: { case_sensitive: false }
 	 
 	has_many :ownerships
-    has_many :dogs, through: :ownerships
+  has_many :dogs, through: :ownerships
 
 	has_secure_password
 	validates :password_digest, length: { minimum: 6 }
