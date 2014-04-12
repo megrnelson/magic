@@ -25,6 +25,7 @@ class DogsController < ApplicationController
   # POST /dogs.json
   def create
     @dog = Dog.new(dog_params)
+    ownership = Ownership.create(dog: @dog, user_id: params[:user][:user_id])
 
     respond_to do |format|
       if @dog.save
@@ -59,6 +60,12 @@ class DogsController < ApplicationController
       format.html { redirect_to dogs_url }
       format.json { head :no_content }
     end
+  end
+
+  def ownership
+    @dog = Dog.find(params[:id])
+    @dog.ownership.create
+    redirect_to(dogs_path)
   end
 
   private

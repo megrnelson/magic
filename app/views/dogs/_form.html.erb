@@ -35,6 +35,10 @@
     <%= f.label :breed %><br>
     <%= f.number_field :breed %>
   </div>
+  <div class="field">
+    <%= f.label :user %><br>
+    <%= select("user", "user_id", User.all.collect {|u| [ u.name, u.id ] }) %>
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140407064244) do
+ActiveRecord::Schema.define(version: 20140412205121) do
 
   create_table "dogs", force: true do |t|
     t.string   "name"
@@ -24,11 +24,18 @@ ActiveRecord::Schema.define(version: 20140407064244) do
     t.datetime "updated_at"
   end
 
+  create_table "ownerships", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "dog_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "users", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
-    t.string   "password"
+    t.string   "password_digest"
     t.string   "address1"
     t.string   "address2"
     t.string   "city"
@@ -39,7 +46,11 @@ ActiveRecord::Schema.define(version: 20140407064244) do
     t.integer  "role"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "remember_token"
+    t.boolean  "admin",           default: false
   end
+
+  add_index "users", ["remember_token"], name: "index_users_on_remember_token"
 
   create_table "venues", force: true do |t|
     t.string   "name"
@@ -47,6 +58,17 @@ ActiveRecord::Schema.define(version: 20140407064244) do
     t.string   "address2"
     t.string   "city"
     t.string   "state"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "zip"
+  end
+
+  create_table "visits", force: true do |t|
+    t.integer  "venue_id"
+    t.integer  "dog_id"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+    t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
