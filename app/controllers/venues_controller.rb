@@ -5,6 +5,8 @@ class VenuesController < ApplicationController
   # GET /venues.json
   def index
     @venues = Venue.all
+    @venues = Venue.all.sort_by {|venue| venue.name.downcase }
+    @venues = @venues.reverse
   end
 
   # GET /venues/1
