@@ -27,6 +27,10 @@ class VenuesController < ApplicationController
   # POST /venues.json
   def create
     @venue = Venue.new(venue_params)
+    if venue_params[:dog_ids]
+      pack_params = venue_params[:dog_ids].map{ |m| {venue_id: venue.id, dog_id: m}} 
+      @venue.packs.build(pack_params)
+    end
 
     respond_to do |format|
       if @venue.save
@@ -42,6 +46,12 @@ class VenuesController < ApplicationController
   # PATCH/PUT /venues/1
   # PATCH/PUT /venues/1.json
   def update
+    @venue = Venue.find(params[:id])
+    if venue_params[:dog_ids]
+      pack_params = venue_params[:dog_ids].map{ |m| {venue_id: venue.id, dog_id: m}} 
+      @venue.packs.build(pack_params)
+    end
+
     respond_to do |format|
       if @venue.update(venue_params)
         format.html { redirect_to @venue, notice: 'Venue was successfully updated.' }

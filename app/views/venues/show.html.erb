@@ -6,12 +6,12 @@
 </p>
 
 <p>
-  <strong>Address1:</strong>
+  <strong>Address:</strong>
   <%= @venue.address1 %>
 </p>
 
 <p>
-  <strong>Address2:</strong>
+  <strong>Address 2:</strong>
   <%= @venue.address2 %>
 </p>
 
@@ -28,6 +28,13 @@
 <p>
   <strong>Zip:</strong>
   <%= @venue.zip %>
+</p>
+
+<p>
+  <strong>Pack:</strong>
+  <% @venue.dogs.each do |dog|%>
+  <%= dog.name%>
+  <% end %> 
 </p>
 
 <%= link_to 'Edit', edit_venue_path(@venue) %> |
