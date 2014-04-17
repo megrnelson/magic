@@ -1,76 +1,55 @@
 class VenuesController < ApplicationController
   before_action :set_venue, only: [:show, :edit, :update, :destroy]
 
-  # GET /venues
-  # GET /venues.json
   def index
     @venues = Venue.all
     @venues = Venue.all.sort_by {|venue| venue.name.downcase }
     @venues = @venues.reverse
   end
 
-  # GET /venues/1
-  # GET /venues/1.json
   def show
   end
 
-  # GET /venues/new
   def new
     @venue = Venue.new
   end
 
-  # GET /venues/1/edit
   def edit
   end
 
-  # POST /venues
-  # POST /venues.json
   def create
     @venue = Venue.new(venue_params)
-    if venue_params[:dog_ids]
-      pack_params = venue_params[:dog_ids].map{ |m| {venue_id: venue.id, dog_id: m}} 
-      @venue.packs.build(pack_params)
-    end
+    @venue.packs.build({venue_id: @venue.id, dog_id: venue_params[:dog_id]})
 
-    respond_to do |format|
-      if @venue.save
-        format.html { redirect_to @venue, notice: 'Venue was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @venue }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @venue.errors, status: :unprocessable_entity }
-      end
+    if @venue.save
+      flash[:notice] = 'Venue was successfully created.'
+      redirect_to venues_path
+    else
+      render 'new'
     end
   end
 
-  # PATCH/PUT /venues/1
-  # PATCH/PUT /venues/1.json
   def update
     @venue = Venue.find(params[:id])
     if venue_params[:dog_ids]
       pack_params = venue_params[:dog_ids].map{ |m| {venue_id: venue.id, dog_id: m}} 
       @venue.packs.build(pack_params)
     end
-
-    respond_to do |format|
-      if @venue.update(venue_params)
-        format.html { redirect_to @venue, notice: 'Venue was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @venue.errors, status: :unprocessable_entity }
-      end
+    if @venue.update(venue_params)
+    
+      flash[:notice] = 'Venue was successfully updated.'
+      redirect_to venues_path
+    else
+      render 'edit'
     end
   end
 
-  # DELETE /venues/1
-  # DELETE /venues/1.json
   def destroy
+    @venue = Venue.find(params[:id])
     @venue.destroy
-    respond_to do |format|
-      format.html { redirect_to venues_url }
-      format.json { head :no_content }
-    end
+    flash[:notice] = "Venue deleted."
+    
+    redirect_to venues_url
   end
 
   private
@@ -81,6 +60,15 @@ class VenuesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def venue_params
-      params.require(:venue).permit(:name, :address1, :address2, :city, :state)
+      params.require(:venue).permit(
+        :name, 
+        :address1, 
+        :address2, 
+        :city, 
+        :state,
+        :zip,
+        :dog_id,
+        :dog_ids => []
+      )
     end
 end

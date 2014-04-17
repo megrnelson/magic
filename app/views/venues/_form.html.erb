@@ -36,7 +36,7 @@
     <%= f.text_field :zip %>
   </div>
   <div class="field">
-    <%= f.label :packs %><br>
+    <%= f.label :dogs %><br>
     <%= select_tag "dog_ids", options_from_collection_for_select(Dog.all, :id, :name), multiple: true %>
   </div>
   <div class="actions">
